@@ -1,118 +1,91 @@
-# College Football: Target Practice
+# EA Sports College Football: Gameplay & Engine Optimization
 
-This project is a skill-training module designed for a college football game. It provides a dedicated practice environment where players can hone their kicking skills by hitting various targets. The system is built with a focus on modularity and extensibility, allowing for new challenges and features to be added easily.
+## 🎮 Project Overview
 
-## Features
+This repository documents the successful completion of the **Electronic Arts (EA) Software Engineering Virtual Experience**. The project simulates a real-world development lifecycle for **EA Sports College Football**, focusing on feature innovation, object-oriented C++ implementation, and performance optimization. It showcases the ability to design, build, and refine game systems from concept to execution.
 
-* **Realistic Physics**: A dedicated `PhysicsEngine` calculates the ball's trajectory based on player input.
-* **Dynamic Challenges**: The `TargetPractice` class allows for the creation of numerous challenges with different balls and targets.
-* **Variety of Targets**: The system supports multiple target types through inheritance, including:
-    * `StaticTarget`: A simple, non-moving target.
-    * `MovingTarget`: A target that moves along a predefined path.
-    * `ScoringZoneTarget`: A target with different zones that award varying points.
-* **Player Progression**: Players earn experience points (`exp`) and can track their `highScores` for each challenge, encouraging improvement and competition.
+## ✨ Key Features & Accomplishments
 
----
+* **Feature Innovation:** Authored a comprehensive feature proposal for a new gameplay mechanic, outlining technical specifications and stakeholder impact.
+* **C++ Architecture:** Architected the foundational C++ framework for the new feature, designing a scalable object-oriented structure with UML class diagrams.
+* **Performance Optimization:** Boosted application performance by identifying and patching a critical bug, optimizing the codebase through the implementation of a more efficient data structure.
 
-## Class Diagram
+## 🛠️ Technologies & Skills Demonstrated
 
-The following diagram illustrates the high-level architecture of the system, showing how the classes interact with each other.
+* **Languages:** C++
+* **Paradigms:** Object-Oriented Design (OOD), Data Structures, Algorithms
+* **Tools:** Git, Version Control, UML
+* **Skills:** Technical Writing, Code Optimization, Debugging, System Design
+
+## 🏛️ System Design & Architecture
+
+As part of the "Game Object Class Creation" module, a scalable object-oriented architecture was designed to support the new gameplay feature. The following UML class diagram represents the core components and their relationships.
+
+### UML Class Diagram
 
 ```mermaid
 classDiagram
-    CollegeFootballGame "1" -- "*" Player : has
-    CollegeFootballGame "1" -- "*" TargetPractice : offers
-    Player "1" -- "1" CollegeFootballGame
-    TargetPractice "1" -- "1" Ball : uses
-    TargetPractice "1" -- "1" Target : uses
-    TargetPractice ..> PhysicsEngine : depends on
-    Target <|-- StaticTarget
-    Target <|-- MovingTarget
-    Target <|-- ScoringZoneTarget
-
-    class Player{
-      +String name
-      +int exp
-      +Map<String, int> highScores
-      +kick(force, angle)
-      +updateExp(points)
-      +getHighScore(challengeId)
+    class Player {
+        +string name
+        +string position
+        +map<string, int> skillRatings
+        +updateSkill(string skill, int points)
     }
 
-    class CollegeFootballGame{
-      +startPractice(player, practice)
+    class Team {
+        +string teamName
+        +list<Player> roster
+        +addPlayer(Player p)
+        +removePlayer(Player p)
     }
 
-    class TargetPractice{
-      +String challengeId
-      +runPractice(player)
+    class Game {
+        +Team homeTeam
+        +Team awayTeam
+        +GameResult result
+        +simulateGame()
     }
 
-    class Ball{
-        +Vector2D initialPosition
-        +Vector2D currentPosition
-        +int initialSpeed
-        +int initialAngle
+    class Feature_PlayerProgression {
+        +calculatePostGameProgression(GameResult result)
+        +applyOffseasonTraining(Player p)
     }
 
-    class Target{
-        <<abstract>>
-        +Vector2D position
-        +float radius
-        +isHit(ballPosition)* bool
-    }
-
-    class PhysicsEngine{
-        <<Service>>
-        +calculateTrajectory(kick, ball)
-    }
-
-    class StaticTarget{
-      +isHit(ballPosition) bool
-    }
-
-    class MovingTarget{
-      +Vector2D path
-      +float speed
-      +isHit(ballPosition) bool
-    }
-
-    class ScoringZoneTarget{
-      +Map<float, int> zones
-      +isHit(ballPosition) bool
-      +calculateScore(hitPosition) int
-    }
+    Team "1" -- "11..*" Player : has a
+    Game "1" -- "2" Team : involves
+    Feature_PlayerProgression ..> Game : uses
+    Feature_PlayerProgression ..> Player : updates
 ```
 
----
+*This diagram is a conceptual representation of the C++ header files created during the simulation.*
 
-## Class Definitions
+## 📝 Modules & Tasks Completed
 
-* **`CollegeFootballGame`**: The main class that orchestrates the game. It holds collections of `Player`s and `TargetPractice` challenges.
-* **`Player`**: Represents a player in the game. It manages player-specific data like `name`, `exp`, and `highScores`, and defines the `kick` action.
-* **`TargetPractice`**: Manages the logic for a single practice session. It uses a `Ball`, a `Target`, and the `PhysicsEngine` to run a challenge for a `Player`.
-* **`Ball`**: A simple data class representing the football, holding its position, speed, and angle.
-* **`PhysicsEngine`**: A service class responsible for all physics calculations, specifically determining the ball's trajectory after a kick.
-* **`Target` (Abstract)**: Serves as a template for all target types by defining a common interface. It cannot be instantiated directly. Instead, concrete subclasses like `StaticTarget` and `MovingTarget` must implement its `isHit()` method.
-* **`StaticTarget`**: A concrete implementation of `Target` that does not move.
-* **`MovingTarget`**: A `Target` that moves along a given path at a certain speed.
-* **`ScoringZoneTarget`**: A `Target` that contains multiple scoring zones and can calculate points based on where it was hit.
+This project was broken down into four key modules, simulating a full software development sprint:
 
----
+### 1. Feature Proposal: New Gameplay Mechanic
 
-## Additional Utilities: Inventory Management
+* **Objective:** Propose a new, engaging feature for EA Sports College Football.
+* **Outcome:** Delivered a detailed technical document outlining the feature's design, system requirements, potential risks, and integration plan.
 
-Included in this project is a standalone inventory management utility. This command-line program allows you to track items, add new stock, and sell items.
+### 2. Game Object Class Creation
 
-### How to Test the Inventory System
+* **Objective:** Design the C++ architecture for the proposed feature.
+* **Outcome:** Created a robust and scalable object-oriented class structure using C++. This included defining objects, their attributes, and their interactions within the game engine, documented via a header file (`.h`).
 
-You can compile and run this utility separately from the main football game project.
+### 3. Inventory System Improvement
 
-1.  **Compile**: Use the following command to compile the inventory program:
-    ```bash
-    g++ -std=c++11 -o inventory_manager task-4-starter.cpp
-    ```
-2.  **Run**: Execute the compiled program:
-    ```bash
-    ./inventory_manager
-    
+* **Objective:** Optimize the game's inventory system for better performance.
+* **Outcome:** Identified an inefficient data structure within the existing codebase and replaced it with a more performant alternative, analyzing algorithmic complexity to reduce processing overhead.
+
+### 4. Live Bugfix
+
+* **Objective:** Diagnose and resolve a critical, pre-existing bug in the codebase.
+* **Outcome:** Successfully debugged the application, pinpointed the source of the error, and implemented a patch, demonstrating strong problem-solving skills with an unfamiliar codebase.
+
+## 📜 Verification
+
+This project was completed as part of the Forage virtual experience program with Electronic Arts.
+
+* **Program Link:** [EA Software Engineering Virtual Experience](https://www.theforage.com/virtual-internships/prototype/R5iK7HMxJGBgaY28v/EA-Software-Engineering-Virtual-Experience-Program)
+* **Certificate of Completion:** Can be verified with code `A4TPpvaJRSDLfeAsG`.
