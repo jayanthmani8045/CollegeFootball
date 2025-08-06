@@ -1,23 +1,23 @@
-# EA Sports College Football: Gameplay & Engine Optimization
+# EA Sports Gameplay Systems & Optimization
 
-## 🎮 Project Overview
+## Project Overview
 
 This repository documents the successful completion of the **Electronic Arts (EA) Software Engineering Virtual Experience**. The project simulates a real-world development lifecycle for **EA Sports College Football**, focusing on feature innovation, object-oriented C++ implementation, and performance optimization. It showcases the ability to design, build, and refine game systems from concept to execution.
 
-## ✨ Key Features & Accomplishments
+## Key Features & Accomplishments
 
 * **Feature Innovation:** Authored a comprehensive feature proposal for a new gameplay mechanic, outlining technical specifications and stakeholder impact.
 * **C++ Architecture:** Architected the foundational C++ framework for the new feature, designing a scalable object-oriented structure with UML class diagrams.
 * **Performance Optimization:** Boosted application performance by identifying and patching a critical bug, optimizing the codebase through the implementation of a more efficient data structure.
 
-## 🛠️ Technologies & Skills Demonstrated
+## Technologies & Skills Demonstrated
 
 * **Languages:** C++
 * **Paradigms:** Object-Oriented Design (OOD), Data Structures, Algorithms
 * **Tools:** Git, Version Control, UML
 * **Skills:** Technical Writing, Code Optimization, Debugging, System Design
 
-## 🏛️ System Design & Architecture
+## System Design & Architecture
 
 As part of the "Game Object Class Creation" module, a scalable object-oriented architecture was designed to support the new gameplay feature. The following UML class diagram represents the core components and their relationships.
 
@@ -25,41 +25,71 @@ As part of the "Game Object Class Creation" module, a scalable object-oriented a
 
 ```mermaid
 classDiagram
-    class Player {
-        +string name
-        +string position
-        +map<string, int> skillRatings
-        +updateSkill(string skill, int points)
+    CollegeFootballGame "1" -- "*" Player : has
+    CollegeFootballGame "1" -- "*" TargetPractice : offers
+    Player "1" -- "1" CollegeFootballGame
+    TargetPractice "1" -- "1" Ball : uses
+    TargetPractice "1" -- "1" Target : uses
+    TargetPractice ..> PhysicsEngine : depends on
+    Target <|-- StaticTarget
+    Target <|-- MovingTarget
+    Target <|-- ScoringZoneTarget
+
+    class Player{
+      +String name
+      +int exp
+      +Map<String, int> highScores
+      +kick(force, angle)
+      +updateExp(points)
+      +getHighScore(challengeId)
     }
 
-    class Team {
-        +string teamName
-        +list<Player> roster
-        +addPlayer(Player p)
-        +removePlayer(Player p)
+    class CollegeFootballGame{
+      +startPractice(player, practice)
     }
 
-    class Game {
-        +Team homeTeam
-        +Team awayTeam
-        +GameResult result
-        +simulateGame()
+    class TargetPractice{
+      +String challengeId
+      +runPractice(player)
     }
 
-    class Feature_PlayerProgression {
-        +calculatePostGameProgression(GameResult result)
-        +applyOffseasonTraining(Player p)
+    class Ball{
+        +Vector2D initialPosition
+        +Vector2D currentPosition
+        +int initialSpeed
+        +int initialAngle
     }
 
-    Team "1" -- "11..*" Player : has a
-    Game "1" -- "2" Team : involves
-    Feature_PlayerProgression ..> Game : uses
-    Feature_PlayerProgression ..> Player : updates
+    class Target{
+        <<abstract>>
+        +Vector2D position
+        +float radius
+        +isHit(ballPosition)* bool
+    }
+
+    class PhysicsEngine{
+        <<Service>>
+        +calculateTrajectory(kick, ball)
+    }
+
+    class StaticTarget{
+      +isHit(ballPosition) bool
+    }
+
+    class MovingTarget{
+      +Vector2D path
+      +float speed
+      +isHit(ballPosition) bool
+    }
+
+    class ScoringZoneTarget{
+      +Map<float, int> zones
+      +isHit(ballPosition) bool
+      +calculateScore(hitPosition) int
+    }
 ```
 
-*This diagram is a conceptual representation of the C++ header files created during the simulation.*
-
-## 📝 Modules & Tasks Completed
+## Modules & Tasks Completed
 
 This project was broken down into four key modules, simulating a full software development sprint:
 
@@ -83,7 +113,7 @@ This project was broken down into four key modules, simulating a full software d
 * **Objective:** Diagnose and resolve a critical, pre-existing bug in the codebase.
 * **Outcome:** Successfully debugged the application, pinpointed the source of the error, and implemented a patch, demonstrating strong problem-solving skills with an unfamiliar codebase.
 
-## 📜 Verification
+## Verification
 
 This project was completed as part of the Forage virtual experience program with Electronic Arts.
 
